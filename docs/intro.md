@@ -44,6 +44,9 @@ see [Getting Started](./Getting%20Started) to begin your jurney in plu-ts
       - [x] `TxBuilder` API
 - v0.3.* :
     - [ ] onchain optimizations
-        - [ ] introduction of an IR
+        - [x] introduction of an IR
         - [ ] satatic AST analysis
     - [ ] improved developer experience
+        - [ ] deprecate `extract` in favor of plain dot notaion
+        - [ ]  deprecate `plet( value ).in( myVar => {...} )`
+            - in favor of `const myVar = plet( value )` 
