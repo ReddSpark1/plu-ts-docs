@@ -662,11 +662,14 @@ it then returns a new CBOR encoded as hex string which represents the signature.
 
 we can add the signature to our transaction as follows:
 ```ts
-tx.addVKeyWitness(
-    VKeyWitness.fromCbor(
-        "<CIP-0030 'signTx' result here>"
-    )
-)
+const witnessSet = TxWitnessSet.fromCbor(
+    "<CIP-0030 'signTx' result here>"
+);
+
+for(const vkeyWit of witnessSet.vkeyWitnesses)
+{
+    tx.addVKeyWitness( vkeyWit )
+}
 ```
 
 so all together becomes
@@ -674,13 +677,16 @@ so all together becomes
 ```ts
 async function signWithBrowser( tx: Tx, cip30wallet: any ): void
 {
-    tx.addVKeyWitness(
-        VKeyWitness.fromCbor(
-            await cip30wallet.signTx(
-                tx.toCbor().toString()
-            )
+    const witnessSet = TxWitnessSet.fromCbor(
+        await cip30wallet.signTx(
+            tx.toCbor().toString()
         )
     );
+
+    for(const vkeyWit of witnessSet.vkeyWitnesses)
+    {
+        tx.addVKeyWitness( vkeyWit )
+    }
 }
 ```
 
