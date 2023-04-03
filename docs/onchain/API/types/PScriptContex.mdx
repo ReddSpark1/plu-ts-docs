@@ -1,0 +1,32 @@
+---
+sidebar_position: 0
+---
+
+# `PScriptContex`
+
+The Script Context is probably the most important piece of data your script receives.
+
+That is because this data is passed directly by the cardano node during the contract evaluation; hence it can always be trusted.
+
+
+definition:
+
+```ts
+export const PScriptContext = pstruct({
+    PScriptContext: {
+        tx: PTxInfo.type,
+        purpose: PScriptPurpose.type
+    }
+});
+```
+
+We see it has a single constructor that includes 2 fields:
+
+
+### `tx`
+
+`tx` of type [`PTxInfo`](./PTxInfo)
+
+### `purpose`
+
+`purpose` of type [`PScriptPurpose`](./PScriptPurpose)

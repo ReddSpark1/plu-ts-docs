@@ -1,0 +1,48 @@
+---
+sidebar_position: 1
+---
+
+# `PScriptPurpose`
+
+It is the second field of the [`PScriptContex`](./PScriptContex) structure.
+
+It tells us what the script is used for based on the contstructor and it passes some useful informations that would be hard to access otherwise.
+
+definition:
+
+```ts
+export const PScriptPurpose = pstruct({
+    Minting: { currencySym: PCurrencySymbol.type },
+    Spending: { utxoRef: PTxOutRef.type },
+    Rewarding: { stakeCredential: PStakingCredential.type },
+    Certifying: { dCert: PDCert.type }
+});
+```
+
+## `Minting`
+
+### `currencySym`
+
+type: `PCurrencySymbol.type`
+
+
+## `Spending`
+
+###  `utxoRef`
+
+type: `PTxOutRef.type`
+
+
+## `Rewarding`
+
+### `stakeCredential`
+
+type: `PStakingCredential.type`
+
+
+## `Certifying`
+
+### `dCert`
+
+type: `PDCert.type`
+
