@@ -19,7 +19,7 @@ export const PTxInfo = pstruct({
         fee:  PValue.type,
         mint: PValue.type,
         dCertificates: list( PDCert.type ),
-        withdrawals: list( pair( PStakingCredential.type, int ) ),
+        withdrawals: list( pair( PStakingCredentials.type, int ) ),
         interval: PPOSIXTimeRange.type,
         signatories: list( PPubKeyHash.type ),
         redeemers: list( pair( PScriptPurpose.type, data ) ),
@@ -80,24 +80,34 @@ since lovelaces can't be minted/burned the quantity will always be 0
 
 type: `list( PDCert.type )`
 
+elements's type: [`PDCert`](./PDCert)
+
 The value implements all the properties defined on the [`TermList`](../../stdlib/TermList) utility term.
 
 
 ### `withdrawals`
 
-type: `list( pair( PStakingCredential.type, int ) )`
+type: `list( pair( PStakingCredentials.type, int ) )`
+
+elements's types: 
+
+- [`TermPair`](../../stdlib/TermPair)
+- [`PStakingCredentials`](./PStakingCredentials)
+- [`TermInt`](../../stdlib/TermInt)
 
 The value implements all the properties defined on the [`TermList`](../../stdlib/TermList) utility term.
 
 
 ### `interval`
 
-type: `PPOSIXTimeRange.type`
+type: [`PPOSIXTimeRange.type`](./PPOSIXTimeRange_and_PInterval)
 
 
 ### `signatories`
 
 type: `list( PPubKeyHash.type )`
+
+elements's type: [`PPubKeyHash`](./PPubKeyHash) 
 
 The value implements all the properties defined on the [`TermList`](../../stdlib/TermList) utility term.
 
@@ -106,6 +116,12 @@ The value implements all the properties defined on the [`TermList`](../../stdlib
 
 type: `list( pair( PScriptPurpose.type, data ) )`
 
+elements's types: 
+
+- [`TermPair`](../../stdlib/TermPair)
+- [`PScriptPurpose`](./PScriptPurpose)
+- `data`
+
 The value implements all the properties defined on the [`TermList`](../../stdlib/TermList) utility term.
 
 
@@ -113,10 +129,15 @@ The value implements all the properties defined on the [`TermList`](../../stdlib
 
 type: `list( pair( PDatumHash.type, data ) )`
 
+elements's types: 
+
+- [`TermPair`](../../stdlib/TermPair)
+- [`PDatumHash`](./PDatumHash)
+- `data`
+
 The value implements all the properties defined on the [`TermList`](../../stdlib/TermList) utility term.
 
 
 ### `id`
 
-type: `PTxId.type`
-
+type: [`PTxId.type`](./PTxId)

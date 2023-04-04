@@ -14,7 +14,7 @@ definition:
 export const PScriptPurpose = pstruct({
     Minting: { currencySym: PCurrencySymbol.type },
     Spending: { utxoRef: PTxOutRef.type },
-    Rewarding: { stakeCredential: PStakingCredential.type },
+    Rewarding: { stakeCredential: PStakingCredentials.type },
     Certifying: { dCert: PDCert.type }
 });
 ```
@@ -37,7 +37,7 @@ type: `PTxOutRef.type`
 
 ### `stakeCredential`
 
-type: `PStakingCredential.type`
+type: `PStakingCredentials.type`
 
 
 ## `Certifying`

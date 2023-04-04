@@ -1,0 +1,104 @@
+---
+sidebar_position: 7
+---
+
+# `PDCert`
+
+It represents any possible certificate that can be included in a transaciton.
+
+definition:
+
+```ts
+export const PDCert = pstruct({
+    KeyRegistration: { stakeCreds: PStakingCredentials.type },
+    KeyDeRegistration: { stakeCreds: PStakingCredentials.type },
+    KeyDelegation: {
+        delegator: PStakingCredentials.type,
+        poolKeyHash: PPubKeyHash.type
+    },
+    PoolRegistration: {
+        poolId: PPubKeyHash.type,
+        poolVFR: PPubKeyHash.type,
+    },
+    PoolRetire: {
+        poolId: PPubKeyHash.type,
+        epoch: int,
+    },
+    Genesis: {},
+    MoveInstantRewards: {}
+});
+```
+
+## `KeyRegistration`
+
+stake credential registration certificate
+
+### `stakeCreds`
+
+type: [`PStakingCredentials`](./PStakingCredentials)
+
+
+## `KeyDeRegistration`
+
+stake credential de-registration certificate
+
+### `stakeCreds`
+
+type: [`PStakingCredentials`](./PStakingCredentials)
+
+## `KeyDelegation`
+
+delegation of the founds controlled by the specified `PStakingCredentials` to the specified poolId
+
+### `delegator`
+
+type: [`PStakingCredentials`](./PStakingCredentials)
+
+### `poolKeyHash`
+
+type: [`PPubKeyHash`](./PPubKeyHash)
+
+## `PoolRegistration`
+
+pool registration certificate
+
+### `poolId`
+
+type: [`PPubKeyHash`](./PPubKeyHash)
+
+### `poolVFR`
+
+type: [`PPubKeyHash`](./PPubKeyHash)
+
+
+## `PoolRetire`
+
+pool de-registration certificate
+
+### `poolId`
+
+type: [`PPubKeyHash`](./PPubKeyHash)
+
+### `epoch`
+
+epoch number after wich the pool becomes inactive
+
+type: [`TermInt`](../../stdlib/TermInt)
+
+## `Genesis`
+
+genesis certificate
+
+## `MoveInstantRewards`
+
+`MoveInstantRewards` certificate (often abbreviated to MIR); used to move Cardano treasurery and reserve founds
+
+
+
+
+
+
+
+
+
+
