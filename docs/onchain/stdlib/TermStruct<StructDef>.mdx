@@ -6,35 +6,29 @@ sidebar_position: 8
 
 `TermStruct` is an other type that is unnecessarely complicated.
 
-This time because it has to mess around with the struct definition; however if we clean all tha complexity to what is strictly needed, 
-`TermStruct` would look something like this:
+This time because it has to mess around with the struct definition; 
+but even so the type definition should not be that hard to understand if we know what is doing
 
 ```ts
+type StructInstance<SCtorDef extends StructCtorDef> = {
+    readonly [Field in keyof SCtorDef]: UtilityTermOf<ToPType<SCtorDef[Field]>>
+}
+
 type TermStruct<SDef extends StructDefinition> = Term<PStruct<SDef>> & {
     
     readonly eqTerm: TermFn<[PStruct<SDef>], PBool>
     readonly eq: ( other: Term<PStruct<SDef>> ) => TermBool
 
 } & 
-(
-    IsSingleKey<SDef> extends true ?
-    {
-        extract: ( ...fields: string[] ) => {
-            in: <PExprResult extends PType>
-                ( expr: ( extracted: StructInstance<...> ) => Term<PExprResult> )
-                 => Term<PExprResult>
-        }
-    }
-    : {}
-);
+    IsSingelKey<SDef> extends true ? StructInstance<SDef[keyof SCtorDef]> : {};
 ```
 
-even with these semplifications it might seem a bit complex but really all is telling us is that it adds the `extract` method _only if_ the struct can only have one single constructor; and adds nothing if it has more.
+even with these semplifications it might seem a bit complex but really all is telling us is that it adds the struct properties (trough `Structinstance`) 
+_only if_ the struct can only have one single constructor; and adds nothing if it has more.
 
 Infact we already encountered [this method while introducing `pmatch`](../Control%20Flow/pmatch); we just didn't know that it was an utility term.
 
-it then adds the `eq` method regardles of the struct definition
-
+it then adds the `eq` method regardles of the struct definition.
 
 ## `eq`
 

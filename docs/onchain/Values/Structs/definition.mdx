@@ -66,28 +66,27 @@ const Dog = pstruct({
 });
 ```
 
-> ## IMPORTANT
->
-> When defining a struct the order of the constructors and the order of the fields matters
->
-> infact at UPLC level there are no names
->
-> this does have two important implications
->
-> 1) structs with similar definition will be interchangeable; meaning that something like
->       ```ts
->       const Kid = pstruct({
->          Kid: {
->               name: str,
->               age: Age.type,
->               toy: Toy.type
->           }
->       });
->       ```
->       can be used in place of a `Dog` without anything breaking
->
-> 2) **changing the order** of constructors or fields **gives back a totally different struct**
+:::caution IMPORTANT
 
+When defining a struct the order of the constructors and the order of the fields matters
+
+infact at UPLC level there are no names
+
+this does have two important implications
+
+1) structs with similar definition will be interchangeable; meaning that something like the snippet below can be used in place of a `Dog` without anything breaking
+```ts
+const Kid = pstruct({
+    Kid: {
+        name: str,
+        age: Age.type,
+        toy: Toy.type
+    }
+});
+```
+2) **changing the order** of constructors or fields **gives back a totally different struct**
+
+:::
 
 ## struct values
 
@@ -113,5 +112,5 @@ const myDog = Dog.Dog({
 Like [aliases](../aliases), structs also do have custom `plu-ts` types; which can be accessed using the `type` static property
 
 ```ts
-const plutsTypeOfToy = Toy.type;
+const typeOfToy = Toy.type;
 ```

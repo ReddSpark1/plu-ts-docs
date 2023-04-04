@@ -7,11 +7,12 @@ import TabItem from '@theme/TabItem';
 
 # Hello plu-ts
 
-Write a smart contract in 5 minutes; deploy it in 10. Enjoy it forever.
-
 ## Pre-requisites
 
-To build a Smart contract and interact with it all we need is `plu-ts` and some way to submit transactions.
+All we need to build a Smart contract and interact with it is:
+
+- `plu-ts`
+- some way to submit transactions.
 
 Infact, `plu-ts` allows you to write the smart contract and create transactions.
 
@@ -32,7 +33,6 @@ git clone https://github.com/HarmonicLabs/plu-ts-starter.git
 mv plu-ts-starter hello-pluts
 cd hello-pluts
 git remote remove origin
-git checkout 0.2.3 # use correct plu-ts depencey version
 ```
 
 this gives us a simple project structure:
@@ -172,7 +172,7 @@ the index just imports `script` from `src/contract.ts` adn prints it out in the 
 
 if we go back to `src/contract.ts` we see that the script is obtained using the following steps:
 
-1) adapting the validator to the standard using `makeValidator`
+1) adapting the validator to the standard using [`makeValidator`](../onchain/API/utilities/makeValidator)
 
 ```ts title="src/contract.ts"
 /* ... */
@@ -191,7 +191,7 @@ export const script = new Script(
 /* ... */
 ```
 
-2) compiling the validator with `compile`
+2) compiling the validator with [`compile`](../onchain/API/utilities/compile)
 
 ```ts title="src/contract.ts"
 /* ... */
@@ -336,12 +336,11 @@ const contract = pfn([
     bs,
     V2.PScriptContext.type
 ],  bool)
-// highlight-next-line
+// highlight-start
 // we should also change the name of the variable here
-// highlight-next-line
 // from `redeemer` to `message`
-// highlight-next-line
 (( owner, message, ctx ) =>
+// highlight-end
     // always suceeds
     pBool( true )
 );
@@ -363,31 +362,23 @@ then we'll check that the transaction is signed by the owner specified in the da
 
 to do so we need informations about the tranasaction and who signed it.
 
-That information is passed by the `cardano-node` trough the `PScriptContext`.
+all the informations about the tranasaction are in the `tx` field of the [`PScriptContex`](../onchain/API/types/PScriptContex)
 
-we can access it as follows:
+an in particular we are interested in the [`signatories` field](../onchain/API/types/PTxInfo#signatories) 
 ```ts
-const signers =
-    // extract informations on the transaciton
-    ctx.extract("txInfo").in( ({ txInfo }) =>
-    // extract the reqired signers of the transactions
-    txInfo.extract("signatories").in( ({ signatories }) =>
-        // return the signers
-        signatories
-    ));
+ctx.tx.signatories;
 ```
 
-and finally check that the owner as indeed signed the transaction:
+since this is a list of all the required singers we chan use all the [`TermList`](../onchain/stdlib/TermList) methods;
+of which [`some`](../onchain/stdlib/TermList#some) allows us to check that **at leat one** element of the list respects a given property:
 ```ts
-const signedByOwner = signers.some( owner.eqTerm );
+const signedByOwner = ctx.tx.signatories.some( owner.eqTerm );
 ```
 
 and finally, we put all together
 
 ```ts title="src/contract.ts"
-import { Address, bool, compile, makeValidator, PaymentCredentials, pBool, pfn, Script, ScriptType, V2 } from "@harmoniclabs/plu-ts";
-import MyDatum from "./MyDatum";
-import MyRedeemer from "./MyRedeemer";
+/* ... */
 
 const contract = pfn([
     PPubKeyHash.type,
@@ -398,22 +389,12 @@ const contract = pfn([
 
     const isBeingPolite = message.eq("Hello plu-ts");
 
-    const signers =
-        // extract informations on the transaciton
-        ctx.extract("txInfo").in( ({ txInfo }) =>
-        // extract the reqired signers of the transactions
-        txInfo.extract("signatories").in( ({ signatories }) =>
-            // return the signers
-            signatories
-        ));
-
-    const signedByOwner = signers.some( owner.eqTerm );
+    const signedByOwner = ctx.tx.signatories.some( owner.eqTerm );
 
     return isBeingPolite.and( signedByOwner );
 });
 
 /* ... */
-
 ```
 
 now runing the program with `npm run start` gives us back:
@@ -624,7 +605,10 @@ export default async function getDeployAndFoundTx( script: Script ): Promise<Tx>
                 datum: new DataB(
                     // remember we set the datum to be the public key hash?
                     // we can extract it from the address as follows
+
+                    // first create an address form the bech32 form
                     Address.fromString( "<paste your address here>" )
+                    // then extract the pyament credential hash
                     .paymentCreds.hash.toBuffer()
                 )
             }

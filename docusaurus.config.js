@@ -77,8 +77,18 @@ const config = {
             line: 'highlight-error',
           },
           {
+            className: 'code-solution',
+            line: 'highlight-solution',
+          },
+          {
             className: 'code-bad-practice',
             line: 'highlight-bad-practice',
+            block: {start: 'bad-practice-start', end: 'bad-practice-end'},
+          },
+          {
+            className: 'code-bad-practice',
+            line: 'highlight-bad',
+            block: {start: 'bad-start', end: 'bad-end'},
           },
         ]
       },
