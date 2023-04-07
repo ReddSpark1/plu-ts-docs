@@ -309,9 +309,9 @@ const contract = pfn([
 /* ... */
 ```
 
-### send messages to the contracts
+### receiving messages in the contract
 
-The second condtion requires the contract to receive a message.
+The second condition requires the contract to receive a message.
 
 This is done thanks to the redeemer (or the second argument of a validator).
 
@@ -360,22 +360,22 @@ const isBeingPolite = message.eq("Hello plu-ts");
 
 then we'll check that the transaction is signed by the owner specified in the datum.
 
-to do so we need information about the tranasaction and who signed it.
+to do so we need information about the transaction and who signed it.
 
-all the information about the tranasaction is in the `tx` field of the [`PScriptContex`](../onchain/API/types/PScriptContex)
+all the information about the transaction is in the `tx` field of the [`PScriptContex`](../onchain/API/types/PScriptContex)
 
-an in particular we are interested in the [`signatories` field](../onchain/API/types/PTxInfo#signatories) 
+and in particular we are interested in the [`signatories` field](../onchain/API/types/PTxInfo#signatories) 
 ```ts
 ctx.tx.signatories;
 ```
 
-since this is a list of all the required singers we chan use all the [`TermList`](../onchain/stdlib/TermList) methods;
-of which [`some`](../onchain/stdlib/TermList#some) allows us to check that **at leat one** element of the list respects a given property:
+since this is a list of all the required signers we can use all the [`TermList`](../onchain/stdlib/TermList) methods;
+of which [`some`](../onchain/stdlib/TermList#some) allows us to check that **at least one** element of the list respects a given property:
 ```ts
 const signedByOwner = ctx.tx.signatories.some( owner.eqTerm );
 ```
 
-and finally, we put all together
+and finally, we put it all together
 
 ```ts title="src/contract.ts"
 /* ... */
@@ -410,7 +410,7 @@ validator compiled succesfully! 🎉
 
 We did it! We wrote our first contract!
 
-## Deployng the Contract
+## Deploying the Contract
 
 now that we have our personal contract we'll use [Koios] to help us deploy the contract to the testnet.
 
@@ -542,9 +542,9 @@ to return tADA to the faucet just send them to the following testnet address:
 
 ### build the deploy transaction
 
-now that we have received our `tADA` we can start playng.
+now that we have received our `tADA` we can start playing.
 
-Firs we need to access them in our code.
+First we need to access them in our code.
 
 We can do so by querying the utxos at the address you received the tADA to.
 
@@ -683,7 +683,7 @@ If we are in a server environmet is very likely we have our private key stored i
 
 so we can just read the private key from there.
 
-Once we have teh private key we can then use it to sign the transaction; `plu-ts` handles the cryptography
+Once we have the private key we can then use it to sign the transaction; `plu-ts` handles the cryptography
 
 ```ts
 tx.signWith( privateKey )
