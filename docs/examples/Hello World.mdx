@@ -562,7 +562,7 @@ export default async function queryMyUtxos(): Promise<UTxO[]>
 
 now that we can access our utxos we can finally start building transactions.
 
-The first transaction we want to do is to deploy the smart contract and found it.
+The first transaction we want to do is to deploy the smart contract and fund it.
 
 
 Let's check we got everything:
@@ -573,14 +573,14 @@ Let's check we got everything:
 
 yes, we can go!
 
-```ts title="src/offchain/getDeployAndFoundTx.ts"
+```ts title="src/offchain/getDeployAndFundTx.ts"
 import { Address, Value, DataB, Script, Tx } from "@harmoniclabs/plu-ts"
 import { scriptTestnetAddr } from "../contract";
 import getTxBuilder from "./getTxBuilder";
 import queryMyUtxos from "./queryMyUtxos";
 
 
-export default async function getDeployAndFoundTx( script: Script ): Promise<Tx>
+export default async function getDeployAndFundTx( script: Script ): Promise<Tx>
 {
     const txBuilder = await getTxBuilder();
     const myUTxOs = await queryMyUtxos();
@@ -598,7 +598,7 @@ export default async function getDeployAndFoundTx( script: Script ): Promise<Tx>
                 datum: undefined,
                 refScript: script
             },
-            { // output holding the founds that we'll spend later
+            { // output holding the funds that we'll spend later
                 address: scriptTestnetAddr,
                 value: Value.lovelaces( 10_000_000 ),
                 // remeber to include a datum
@@ -723,7 +723,7 @@ import { koios } from "./offchain/koios"
 
 async function main()
 {
-    let tx = await getDeployAndFoundTx( script );
+    let tx = await getDeployAndFundTx( script );
     signWithServer( tx );
     await koios.tx.submit( tx );
 }
@@ -732,7 +732,7 @@ main();
 
 ## Using the Contract
 
-The last step is to build a new trasaction that will allow us to spend the founds we sent to the contract.
+The last step is to build a new trasaction that will allow us to spend the funds we sent to the contract.
 
 ### get the reference UTxO
 
@@ -834,7 +834,7 @@ import { koios } from "./offchain/koios";
 
 async main()
 {
-    let tx = await getDeployAndFoundTx( script );
+    let tx = await getDeployAndFundTx( script );
     await signTxServer( tx );
     await koios.tx.submit( tx );
 
